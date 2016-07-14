@@ -1,0 +1,19 @@
+{
+    "name": "joseagd/ziemes",
+    "description": "Developing CMS",
+    "type": "project",
+    
+    "autoload": {
+        "psr-4": {
+            "Ziemes\\": ["src", "framework"]
+        }
+    },
+    
+    "require": {
+        "symfony/http-foundation": "^3.1",
+        "symfony/routing": "^3.1",
+        "league/plates": "^3.1",
+        "symfony/filesystem": "^3.1",
+        "symfony/finder": "^3.1"
+    }
+}
