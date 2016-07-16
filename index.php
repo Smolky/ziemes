@@ -21,16 +21,16 @@ define ('APP_DIR', __DIR__);
 $loader = require_once __DIR__ . '/vendor/autoload.php';
 
 
-// Requiriments
+// Requirements
+use Ziemes\Framework\Framework;
+use Ziemes\Framework\Controllers\ErrorController;
+
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Routing\Exception\ResourceNotFoundException;
-
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
+use HttpKernel\Exception\FlattenException;
+use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
 
 
 // Search for routes
@@ -43,40 +43,24 @@ foreach ($finder as $file) {
 }
 
 
+// Events
+$dispatcher = new EventDispatcher ();
+
+
+// Add controller to handle error request
+$dispatcher->addSubscriber (new ExceptionListener ('Ziemes\\Controllers\\ErrorController::indexAction'));
 
 
 // Create request
 $request = Request::createFromGlobals ();
 
 
-// Determine controller
-$context = new RequestContext ();
-$context->fromRequest ($request);
-$matcher = new UrlMatcher ($routes, $context);
+// Create framework
+$framework = new Framework ($dispatcher, $routes);
 
 
-// Determine the controller
-try {
-    
-    // Get 
-    $attributes = $matcher->match ($request->getPathInfo ());
-    
-    
-    // Run the delegated method
-    // @todo
-    $controller = new $attributes['_controller'] ();
-    $response = $controller->execute ($attributes);
-
-    
-
-// No route can be found for this request
-} catch (ResourceNotFoundException $e) {
-    $response = new Response ('Not Found', 404);
-
-// Another bad thing happers
-} catch (Exception $e) {
-    $response = new Response ('An error occurred ' . $e->getMessage (), 500);
-}
+// Get response
+$response = $framework->handle ($request);
 
 
 
