@@ -18,6 +18,8 @@
         "monolog/monolog": "^1.20",
         "symfony/console": "^3.1",
         "symfony/event-dispatcher": "^3.1",
-        "symfony/http-kernel": "^3.1"
+        "symfony/http-kernel": "^3.1",
+        "robmorgan/phinx": "^0.6.2",
+        "erusev/parsedown": "^1.6"
     }
 }

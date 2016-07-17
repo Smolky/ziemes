@@ -1,0 +1,9 @@
+<article>
+    <h1>
+        <?= $news->getTitle () ?>
+    </h1>
+
+    <div>
+        <?= $parsedown->text ($news->getContent ()) ?>
+    </div>
+</article>

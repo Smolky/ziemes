@@ -1,1 +1,13 @@
-Hello world to <?=$this->e($name)?>
+<?php if ( ! $news_collection) : ?>
+    <p>There are no news to show</p>
+<?php else : ?>
+    <ul>
+        <?php foreach ($news_collection as $_news) : ?>
+            <li>
+                <a href="<?= $_news->getLink () ?>">
+                    <?= $_news->getId () ?> <?= $_news->getTitle () ?>
+                </a>
+            </li>
+        <?php endforeach ?>
+    </ul>
+<?php endif ?>

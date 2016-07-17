@@ -5,7 +5,6 @@
  */
 namespace Ziemes\Framework;
 
-use Symfony\Component\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -24,7 +23,7 @@ use Ziemes\Framework\Events\ResponseEvent;
  *
  * @package Ziemes
  */
-class Framework extends HttpKernel\HttpKernel {
+class Framework implements HttpKernelInterface {
 
     /** @var Dispatacher */
     protected $_dispatcher;

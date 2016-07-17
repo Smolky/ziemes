@@ -1,7 +1,7 @@
 <?php 
 /**
  *
- * @author José Antonio García Díaz
+ * @author JosÃ© Antonio GarcÃ­a DÃ­az
  */
 namespace Ziemes\News\Controllers;
 
@@ -9,12 +9,13 @@ use Ziemes\Framework\Controller\AbstractController;
 use Ziemes\News\Model\Repositories\NewsRepository;
 
 
+
 /**
  * Index
  *
  * @package joseagd\news
  */
-class Index extends AbstractController {
+class Detail extends AbstractController {
     
     /**
      * execute
@@ -23,17 +24,23 @@ class Index extends AbstractController {
      */
     public function execute ($params=array ()) {
     
-        // Retrieve all the news
+        // Retrieve the detail news
         $news_repository = new NewsRepository ();
-        $news_collection = $news_repository->findAll ();
+        $news = $news_repository->findById ($params['id']);
+        
+        
+        // Not found?! An 404 error must be thrown
+        // @todo
+        
+        $parsedown = new \Parsedown ();
         
     
         // Retrieve template
-        $template = $this->getTemplate ('index');
+        $template = $this->getTemplate ('detail');
         
         
         // Assign data to the template
-        $template->data (['news_collection' => $news_collection]);
+        $template->data (['news' => $news, 'parsedown' => $parsedown]);
         
     
         // Return response
