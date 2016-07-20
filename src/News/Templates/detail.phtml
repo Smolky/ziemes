@@ -1,7 +1,14 @@
+<?php $this->layout('self::news-layout', ['title' => $news->getTitle ()]) ?>
 <article>
     <h1>
         <?= $news->getTitle () ?>
     </h1>
+    
+    <div>
+        <a href="<?= $this->_url_generator->generate ('route.news.index') ?>">
+            Volver
+        </a>
+    </div>
 
     <div>
         <?= $parsedown->text ($news->getContent ()) ?>

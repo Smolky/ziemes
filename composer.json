@@ -20,6 +20,8 @@
         "symfony/event-dispatcher": "^3.1",
         "symfony/http-kernel": "^3.1",
         "robmorgan/phinx": "^0.6.2",
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "symfony/debug": "^3.1",
+        "pimple/pimple": "^3.0"
     }
 }

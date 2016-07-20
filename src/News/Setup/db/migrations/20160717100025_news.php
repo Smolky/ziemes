@@ -52,6 +52,7 @@ class News extends AbstractMigration
         $news
             ->addColumn('createdat', 'timestamp', array('default' => 'CURRENT_TIMESTAMP', 'comment' => 'Created at'))
             ->addColumn('updatedat', 'timestamp', array('default' => 'CURRENT_TIMESTAMP', 'comment' => 'Updated at'))
+            ->addColumn('uid', 'char', array ('comment' => 'Public UID'))
             ->addColumn('title', 'string', array ('comment' => 'Title'))
             ->addColumn('slug', 'char', array ('comment' => 'Slug (url identifier)'))
             ->addColumn('content', 'text', array ('comment' => 'Content'))

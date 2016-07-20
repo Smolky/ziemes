@@ -5,12 +5,17 @@
  */
 namespace Ziemes\Framework;
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Pimple\Container;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RouteCollection;
@@ -33,14 +38,21 @@ class Framework implements HttpKernelInterface {
     protected $_routes;
     
     
+    /** @var Container */
+    protected $_container;
+    
+    
     /**
      * __construct
      *
      * @package Ziemes
      */
     public function __construct (EventDispatcher $dispatcher, RouteCollection $routes) {
+        
         $this->_dispatcher = $dispatcher;
         $this->_routes = $routes;
+        $this->_container = new Container ();
+
     }
     
 
@@ -58,9 +70,17 @@ class Framework implements HttpKernelInterface {
     
     public function handle (Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true) {
     
-        // Determine controller
+        // Create context from the request
         $context = new RequestContext ();
         $context->fromRequest ($request);
+        
+        
+        // Routes is globally used
+        $this->_container['routes.generator'] =  new UrlGenerator ($this->_routes, $context);
+        
+        
+        
+        // Create a matcher with our context and the routes
         $matcher = new UrlMatcher ($this->_routes, $context);
         
         
@@ -72,7 +92,10 @@ class Framework implements HttpKernelInterface {
             
             
             // Run the delegated method
-            $controller = new $attributes['_controller'] ();
+            $controller = new $attributes['_controller'] ($this->_container);
+            
+            
+            // Get the response for our request
             $response = $controller->execute ($attributes);
 
             
@@ -84,6 +107,7 @@ class Framework implements HttpKernelInterface {
         // Another bad thing happers
         } catch (Exception $e) {
             $response = new Response ('An error occurred ' . $e->getMessage (), 500);
+            
         }
         
         

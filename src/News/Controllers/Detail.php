@@ -20,6 +20,12 @@ class Detail extends AbstractController {
     /**
      * execute
      *
+     * Usually the URLS to fetch an execute array has the following
+     * schema: /id/slug
+     *
+     * It's possible that the SLUG doesn't fit with the ID and this
+     * can cause 
+     *
      * @package joseagd\news
      */
     public function execute ($params=array ()) {
@@ -32,6 +38,12 @@ class Detail extends AbstractController {
         // Not found?! An 404 error must be thrown
         // @todo
         
+        
+        // Has a different slug? Redirect!
+        // @todo
+        
+        
+        // Retrieve a markdown parser
         $parsedown = new \Parsedown ();
         
     

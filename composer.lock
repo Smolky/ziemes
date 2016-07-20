@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "62ab61ae857d42246a31e2d804675014",
-    "content-hash": "1a99bb61f936e5579b43a608b8ef380a",
+    "hash": "b493e71eb677c982240f84a04943baad",
+    "content-hash": "d53d61c826c89bb8786405a9c8f6c38d",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -177,6 +177,52 @@
             "time": "2016-07-02 14:02:10"
         },
         {
+            "name": "pimple/pimple",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/silexphp/Pimple.git",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Pimple": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Pimple, a simple Dependency Injection Container",
+            "homepage": "http://pimple.sensiolabs.org",
+            "keywords": [
+                "container",
+                "dependency injection"
+            ],
+            "time": "2015-09-11 15:10:35"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -216,16 +262,16 @@
         },
         {
             "name": "robmorgan/phinx",
-            "version": "v0.6.2",
+            "version": "v0.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/robmorgan/phinx.git",
-                "reference": "35c4fdc26857d02d78080f68d4973993d77bd7a8"
+                "reference": "6fd56a6e5d93f37fe40e33d90461dc5a9d9e60a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robmorgan/phinx/zipball/35c4fdc26857d02d78080f68d4973993d77bd7a8",
-                "reference": "35c4fdc26857d02d78080f68d4973993d77bd7a8",
+                "url": "https://api.github.com/repos/robmorgan/phinx/zipball/6fd56a6e5d93f37fe40e33d90461dc5a9d9e60a1",
+                "reference": "6fd56a6e5d93f37fe40e33d90461dc5a9d9e60a1",
                 "shasum": ""
             },
             "require": {
@@ -235,7 +281,7 @@
                 "symfony/yaml": "~2.8|~3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0|^5.0"
+                "phpunit/phpunit": "^4.8.26|^5.0"
             },
             "bin": [
                 "bin/phinx"
@@ -278,7 +324,7 @@
                 "migrations",
                 "phinx"
             ],
-            "time": "2016-06-23 15:27:01"
+            "time": "2016-07-18 17:59:45"
         },
         {
             "name": "symfony/config",

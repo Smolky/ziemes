@@ -11,14 +11,27 @@ namespace Ziemes\Framework\PDO;
  * This class is used to provide a default implementation
  * for all the repositories for your custom models
  *
+ * The responsibility for this kind of objects 
+ * if to generated the needed queries for fetching
+ * the database and delegate in an DataMapper to fetch
+ * the data
  * 
  *
  * @package Ziemes
  */
 abstract class AbstractRepository {
 
+    /** @var entity **/
+    protected $entity = '';
+    
+
     /** @var table */
     protected $table = '';
+    
+    
+    /** @var DataMapper */
+    protected $data_mapper;
+
     
     
     /**
@@ -29,27 +42,21 @@ abstract class AbstractRepository {
     public function __construct () {
     
         // Determine the table name
-        if ( ! $this->table) {
+        $entity = new $this->entity;
+        if (isset ($entity->table)) {
+            $table_name = $entity->table;
+            
+        } else {
             $parts = explode ('\\', $this->entity);
-            $this->table = strtolower (end ($parts));
+            $table_name = strtolower (end ($parts));
         }
         
+        $this->table = $table_name;
         
-        // Create PDO
-        // @temp
-        $host = 'localhost';
-        $db = 'ziemes';
-        $user = 'root';
-        $pass = 'nsseaplp';
-        $charset = 'utf8';
-        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-        $opt = [
-            \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-            \PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
-        $this->pdo = new \PDO ($dsn, $user, $pass, $opt);
-    
+        
+        
+        // Create the data mapper
+        $this->data_mapper = new DataMapper ();
     }
     
     
@@ -65,29 +72,11 @@ abstract class AbstractRepository {
     public function findById ($id) {
     
         // Create the basic query
-        $sql = "
-            SELECT 
-                `" . $this->table . "`.* 
-                
-            FROM 
-                `" . $this->table . "` 
-                
-            WHERE 
-                `" . $this->table . '`.id = :id
-        ';
+        $sql = "SELECT `$this->table`.* FROM `$this->table` WHERE `$this->table`.id = :id";
         
         
-        // Fetch items
-        $query = $this->pdo->prepare ($sql);
-        $query->execute (['id' => $id]);
-        
-        
-        // Get data mapper
-        $data_mapper = new DataMapper ();
-        $items = $data_mapper->map ($this->entity, $query->fetchAll ());
-        
-        
-        // Return items
+        // Return result
+        $items = $this->data_mapper->map ($this->entity, $sql, ['id' => $id]);
         return reset ($items);
     
     }
@@ -100,24 +89,14 @@ abstract class AbstractRepository {
      *
      * @package Ziemes
      */
-    public function findAll () {
+    public function findAll ($page=1, $offset=PHP_INT_MAX) {
     
         // Create the basic query
-        $sql = "SELECT `" . $this->table . "`.* FROM `" . $this->table . "`";
-        
-        
-        // Fetch items
-        $query = $this->pdo->prepare ($sql);
-        $query->execute ();
-        
-        
-        // Get data mapper
-        $data_mapper = new DataMapper ();
-        $items = $data_mapper->map ($this->entity, $query->fetchAll ());
+        $sql = "SELECT `$this->table`.* FROM `$this->table` LIMIT :page, :offset";
         
         
         // Return items
-        return $items;
+        return $this->data_mapper->map ($this->entity, $sql, ['page' => $offset * ($page - 1), 'offset' => $offset]);
     }
 
 }

@@ -142,7 +142,7 @@ class News {
      * @package Ziemes
      */
     public function getLink () {
-        return 'news/' . $this->getId () . '/' . $this->getSlug ();
+        return '/Ziemes/news/' . $this->getId () . '/' . $this->getSlug ();
     }
     
     

@@ -1,10 +1,24 @@
+<?php $this->layout('self::news-layout', ['title' => 'News']) ?>
+<?php if ($categories_collection) : ?>
+    <ul>
+        <?php foreach ($categories_collection as $_category) : ?>
+            <li>
+                <a href="<?= $_category->getLink () ?>">
+                    <?= $_category->getId () ?> <?= $_category->getTitle () ?>
+                </a>
+            </li>
+        <?php endforeach ?>
+    </ul>
+<?php endif ?>
+
+
 <?php if ( ! $news_collection) : ?>
     <p>There are no news to show</p>
 <?php else : ?>
     <ul>
         <?php foreach ($news_collection as $_news) : ?>
             <li>
-                <a href="<?= $_news->getLink () ?>">
+                <a href="<?= $this->_url_generator->generate ('route.news.detail', array ('id' => $_news->getId (), 'slug' => $_news->getSlug ())) ?>">
                     <?= $_news->getId () ?> <?= $_news->getTitle () ?>
                 </a>
             </li>

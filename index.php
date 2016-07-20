@@ -23,6 +23,7 @@ $loader = require_once __DIR__ . '/vendor/autoload.php';
 
 // Requirements
 use Ziemes\Framework\Framework;
+use Symfony\Component\Debug\Debug;
 use Ziemes\Framework\Controllers\ErrorController;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use HttpKernel\Exception\FlattenException;
 use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
+
+
+// Activate debug
+Debug::enable();
 
 
 // Search for routes

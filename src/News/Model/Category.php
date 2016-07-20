@@ -15,6 +15,9 @@ namespace Ziemes\News\Model;
  */
 class Category {
 
+    /** @var $table */
+    public $table = 'news_categories';
+
     /** @var $id */
     protected $id;
     
@@ -105,6 +108,20 @@ class Category {
      */
     public function getName () {
         return $this->name;
+    }
+    
+    
+    /**
+     * getLink
+     *
+     * Gets an link
+     *
+     * @return String
+     *
+     * @package Ziemes
+     */
+    public function getLink () {
+        return 'news/' . $this->getId () . '/' . $this->getName ();
     }
     
     

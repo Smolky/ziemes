@@ -5,6 +5,9 @@
  */
 namespace Ziemes\Framework\Controller;
 
+use Pimple\Container;
+
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,8 +32,23 @@ abstract class AbstractController {
     protected $_response;
     
     
+    /** @var Container */
+    protected $_container;
+    
+    
     /** @var Engine **/
     private $_templatesEngine;
+    
+    
+    
+    /**
+     * __construct
+     *
+     * @package Ziemes
+     */
+    public function __construct (Container $container) {
+        $this->_container = $container;
+    }
     
     
     /**
@@ -63,7 +81,26 @@ abstract class AbstractController {
      * @package Ziemes
      */
     protected function getTemplate ($template) {
-        return new Template ($this->getTemplatesEngine (), $template);
+    
+        // Retrieve template engine
+        $engine = $this->getTemplatesEngine ();
+        
+        
+        // Create template
+        $tpl = new Template ($this->getTemplatesEngine (), 'self::' . $template);
+        
+        
+        // Assign global data to the template
+        $tpl->_url_generator = $this->_container['routes.generator'];
+        
+        $tpl->request = $this->getRequest ();
+        
+
+        
+    
+    
+        // Return template
+        return $tpl;
     }
     
     
@@ -91,6 +128,7 @@ abstract class AbstractController {
     
         // Load!
         if ( ! $this->_templatesEngine) {
+            
             // Get URL for the real controller
             $reflection = new \ReflectionClass ($this);
             
@@ -99,8 +137,27 @@ abstract class AbstractController {
             $url = implode ('/', $parts);
         
             
+            // Base urls
+            $layours_dir = APP_DIR . '/src/Layouts';
+            
+            
+            // Create engine
+            $engine = new Engine ();
+
+            
+            // Configure to use only phtml files
+            $engine->setFileExtension ('phtml');
+            
+            
             // Reference templates
-            $this->_templatesEngine = new Engine ($url . '/Templates', 'phtml');
+            $engine->addFolder ('self', $url . '/Templates');
+            $engine->addFolder ('layouts', $layours_dir);
+            
+            
+            // Load!
+            $this->_templatesEngine = $engine;
+                        
+            
         }
         
         // Returne the engine
